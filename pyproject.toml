@@ -5,7 +5,6 @@ build-backend = "maturin"
 [project]
 name = "rs2py"
 requires-python = ">=3.6"
-version = "0.1.0"
 description = "Rust Extention for Python"
 readme = "README.md"
 keywords = ["rust", "python", "utils"]
