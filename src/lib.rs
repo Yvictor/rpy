@@ -397,7 +397,7 @@ fn get_price_tick_move(a: f64, b: i64) -> f64 {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn rpy(_py: Python, m: &PyModule) -> PyResult<()> {
+fn rs2py(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_price_tick_move, m)?)?;
     Ok(())
 }
