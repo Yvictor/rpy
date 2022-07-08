@@ -393,11 +393,19 @@ fn get_price_tick_move(a: f64, b: i64) -> f64 {
     IX[(idx + b) as usize]
 }
 
+#[pyfunction]
+fn get_price_between_tick(a: f64, b: f64) -> i64 {
+    let a_idx: &i64 = IXMAP.get(&((a * 100.) as i64)).unwrap();
+    let b_idx: &i64 = IXMAP.get(&((b * 100.) as i64)).unwrap();
+    b_idx - a_idx
+}
+
 
 
 /// A Python module implemented in Rust.
 #[pymodule]
 fn rs2py(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_price_tick_move, m)?)?;
+    m.add_function(wrap_pyfunction!(get_price_between_tick, m)?)?;
     Ok(())
 }
