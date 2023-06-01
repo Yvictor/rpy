@@ -1,8 +1,7 @@
 use pyo3::prelude::*;
 
-use std::collections::HashMap;
 use lazy_static::lazy_static;
-
+use std::collections::HashMap;
 
 static IX: [f64; 4999] = [
     0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16,
@@ -385,7 +384,6 @@ lazy_static! {
     };
 }
 
-
 /// Formats the sum of two numbers as string.
 #[pyfunction]
 fn get_price_tick_move(a: f64, b: i64) -> f64 {
@@ -400,12 +398,24 @@ fn get_price_between_tick(a: f64, b: f64) -> i64 {
     b_idx - a_idx
 }
 
-
+#[pyfunction]
+fn get_price_between_ticks(a: f64, b: f64) -> Vec<f64> {
+    let a_idx: i64 = *IXMAP.get(&((a * 100.) as i64)).unwrap();
+    let b_idx: i64 = *IXMAP.get(&((b * 100.) as i64)).unwrap();
+    if b_idx > a_idx {
+        IX[a_idx as usize..=b_idx as usize].to_vec()
+    } else {
+        let mut v = IX[b_idx as usize..=a_idx as usize].to_vec();
+        v.reverse();
+        v
+    }
+}
 
 /// A Python module implemented in Rust.
 #[pymodule]
 fn rs2py(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_price_tick_move, m)?)?;
     m.add_function(wrap_pyfunction!(get_price_between_tick, m)?)?;
+    m.add_function(wrap_pyfunction!(get_price_between_ticks, m)?)?;
     Ok(())
 }
